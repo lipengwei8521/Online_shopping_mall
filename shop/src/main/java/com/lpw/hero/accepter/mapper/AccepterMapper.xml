@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lpw.hero.accepter.mapper.AccepterMapper" >
+  <resultMap id="BaseResultMap" type="com.lpw.hero.accepter.bean.Accepter" >
+    <id column="accepter_id" property="accepterId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="adress" property="adress" jdbcType="VARCHAR" />
+    <result column="postalcode" property="postalcode" jdbcType="VARCHAR" />
+    <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+ 	<!-- sql 编号1 -->
+	<select id="getAccepterList" parameterType="com.lpw.hero.accepter.bean.Accepter"
+		resultMap="BaseResultMap">
+		select * from accepter
+		<where>
+			user_id = #{userId}
+		</where>
+		<if test="start != -1 and length != -1">
+			limit #{start},#{length}
+		</if>
+	</select>
+ 
+ 	<!-- sql 编号2 -->
+	<select id="getAccepterCount" parameterType="com.lpw.hero.accepter.bean.Accepter"
+		resultType="long">
+		select count(*) from accepter
+		<where>
+			user_id = #{userId}
+		</where>
+	</select>
+ 	
+ 	<!-- sql 编号3 -->
+	<insert id="addAccepter" parameterType="com.lpw.hero.accepter.bean.Accepter">
+		insert into accepter(user_id,name,adress,postalcode,phone_number)
+		values(#{userId},#{name},#{adress},#{postalcode},#{phoneNumber})
+	</insert>
+	
+	<!-- sql 编号5 -->
+	<update id="updateAccepter">
+		update accepter
+		<set>
+			<if test="userId != null and userId != ''">
+				user_id = #{user_id},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="adress != null and adress != ''">
+				adress = #{adress},
+			</if>
+			<if test="postalcode != null and postalcode != ''">
+				postalcode = #{postalcode},
+			</if>
+			<if test="phoneNumber != null and phoneNumber != ''">
+				phoneNumber = #{phoneNumber},
+			</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+ 	
+ 	<!-- sql 编号6 -->
+	<delete id="deleteAccepter" parameterType="com.lpw.hero.accepter.bean.Accepter">  
+		delete from accepter where accepter_id = #{accepterId}
+	</delete>
+</mapper>

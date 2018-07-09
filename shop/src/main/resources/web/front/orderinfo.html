@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>订单页面</title>
+	<link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+	<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+<script type="text/javascript">
+	$('.dropdown-toggle').dropdown()
+	$('#dLabel').dropdown()
+</script>
+<body>
+	<#include "/front/navigator.html">
+	
+	<div class="container" style=" border-top:2px solid #dddddd;  border-bottom: 1px solid #dddddd; margin-bottom: 20px;margin-top: 20px;">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<h4>收货人信息</h4>
+				<table>
+					<tr>
+						<td><input type="radio" name="accepterRadio"/></td>
+						<td>姓名</td>
+						<td>地址</td>
+						<td>邮编</td>
+						<td>电话</td>
+					</tr>
+				</table>
+				
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>编号</th>
+							<th>产品</th>
+							<th>商品名称</th>
+							<th>单价</th>
+							<th>数量</th>
+							<th>小计</th>
+						</tr>
+					</thead>
+					<tbody>
+						<#if list??>
+							<#list list as orderinfo>
+							
+								<tr>
+									<td>
+										1
+									</td>
+									<td>
+										<img alt="${(orderinfo.shopName)!}" src="${(orderinfo.orderShopimg)!}" style="width: 100px;height: 75px;">
+									</td>
+									<td>
+										${(orderinfo.shopName)!}
+									</td>
+									<td>
+										${(orderinfo.shopPrice)!}
+									</td>
+									<td>${(orderinfo.shopNum)!}</td>
+									<td>${((orderinfo.shopNum)!)*((orderinfo.shopPrice)!)}</td>
+								</tr>
+								
+							</#list>
+						</#if>
+								
+					</tbody>
+					
+				</table>
+				<div style="margin-top: 30px;" class="col-md-12 column">
+				
+					<div class="col-md-8 column"></div>
+					<div class="col-md-4 column" style="color: red;">
+						<div style="font-size: 15px;float: right;margin-right: 70px;" >
+							<span style="font-size: 20px;">总价：</span>${(sum)!}
+							
+						</div>
+						
+						<div style="font-size: 15px;float: right;margin-right: 70px;" >
+							<span style="font-size: 20px;">总量：</span>${(number)!}
+						</div>
+						
+					</div>
+					
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>商品管理--商品修改界面</title>
+		<link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/nice-validator/jquery.validator.css" />
+		<script type="text/javascript" src="/ckeditor/ckeditor.js"></script>
+		<script type="text/javascript" src="/js/jquery.form.js"></script>
+	</head>
+	<body style="background-color: #F5F5F5">
+		<div class="container">
+			<div class="row clearfix">
+				<div class="col-md-12 column">
+					<div class="row alert alert-info" style="margin: 4px; padding: 5px">
+						<ul class="breadcrumb">
+							<li class="active">更新商品信息</li>
+						</ul>
+					</div>
+					
+					<form id="shopInfoForm"  action="/back/shopinfo/updateShopInfo"  class="form-horizontal" method="post" >
+						<h5 class="page-header alert-info" style="margin: 0px;padding: 10px;margin-bottom: 10px;">基本信息</h5>
+						<input type="hidden" value="${(shopinfo.shopId)!}" name="shopId">
+						<div class="row">
+							<div class="col-xs-5">
+								<div class="form-group">
+									<label class="col-xs-4 control-label">商品名称：</label>
+									<div class="col-xs-8">
+										<input type="text" class="form-control" name="shopName" placeholder="请输入商品名称" value="${(shopinfo.shopName)!}"/>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-xs-7">
+								<div class="form-group">
+									<label class="col-xs-4 control-label">商品价格：</label>
+									<div class="col-xs-8">
+										<input type="text" class="form-control" name="price"  placeholder="请输入商品价格" value="${(shopinfo.price)!}"/>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-xs-5">
+								<div class="form-group">
+									<label class="col-xs-4 control-label">商品图片：</label>
+									<div class="col-xs-8">
+										<input type="file" class="form-control" name="shopUrl" onchange="uploadImg()"/>
+									</div>
+								</div>
+							</div>
+							<div class="col-xs-7">
+								<div class="form-group">
+									<label class="col-xs-4 control-label">图片预览：</label>
+									<div class="col-xs-8">
+										<img id="showImg" alt="商品图片" src="${(shopinfo.shopImg)!}" style="width: 100px;height: 100px;object-fit:contain"/>
+										<input type="hidden" name = "shopImg" id="shopImg"/>
+									</div>
+								</div>
+							</div>
+							
+						</div>
+						
+						<h5 class="page-header alert-info" style="margin: 0px;padding: 10px;margin-bottom: 10px;">商品简介</h5>
+						<span id="mes"></span>
+						<div class="row">
+							<div class="col-xs-5">
+								<div class="form-group">
+									<label class="col-xs-4 control-label">商品简介：</label>
+									<div class="col-xs-8">
+										<textarea rows="" cols="" class="col-xs-12" name="shopIntro" >${(shopinfo.shopIntro)!}</textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<h5 class="page-header alert-info" style="margin: 0px;padding: 10px;margin-bottom: 10px;">商品详情</h5>
+						<span id="mes"></span>
+						<div class="row">
+							<div class="col-xs-12">
+								<div class="form-group">
+									<div class="col-xs-12">
+										<textarea rows="" cols="" class="ckeditor" name="shopDetail" >${(shopinfo.shopDetail)!}</textarea>
+									</div>
+									
+								</div>
+							</div>
+								
+						</div>
+						
+						<div class="row">
+							<div class="col-xs-12 col-xs-offset-4">
+								<input type="submit" class="btn btn-sucess" value="更新商品信息"/>
+								<input type="reset" class="btn btn-danger" value="重置信息"/>
+							</div>
+						</div>
+					</form>
+									
+					<script type="text/javascript">
+						// 验证用户名是否重复	
+						$(function(){
+								$("#username").blur(function(){
+									$.post(
+									"/back/userinfo/validatorUsername",		
+									{
+										username:$(this).val()
+									},
+									function(e){
+										$("#mes").html(e);
+									}
+									);
+								});
+								
+							});
+						
+							// 上传图片
+							function uploadImg(){
+								 $('#shopInfoForm').ajaxSubmit(      //ajax方式提交表单  
+						            {  
+						                url: '/back/shopinfo/uploadImg',  
+						                type: 'post',  
+						               // dataType: 'json',  
+						               // beforeSubmit: function () {},  
+						                success: function (data) {  
+						                   $("#showImg").attr("src",data);
+						                   $("#shopImg").val(data);
+						                },  
+						                clearForm: false,//禁止清楚表单  
+						                resetForm: false //禁止重置表单  
+						           	}
+								 );  	
+							}
+					</script>
+
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

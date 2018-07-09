@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>购物车</title>
+	<link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+	<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<#include "/front/navigator.html">
+	
+	<div class="col-md-12 column" style="height: 100px;"></div>
+	<div class="col-md-2 column"></div>
+	<div class="col-md-8 column" style="border-bottom: 2px solid #DDDDDD">
+
+		<form action="/admin/orderCheck" method="post" id="cartform" >
+		
+			<#if cart??>
+			
+				<#if cart?keys??>
+				
+				<table class="table">
+					<thead>
+						<tr>
+							<th>全选&nbsp;&nbsp;&nbsp;<input type="checkbox" checked class="checkedAll"/></th>
+							<th></th>
+							<th>商品</th>
+							<th>单价</th>
+							<th>数量</th>
+							<th>小计</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<#list cart?keys as key>
+							<tr>
+								<td style="padding-top: 50px;"><input type="checkbox"
+									class="check" checked onchange="check()" name="keys"
+									value="${(cart[key].shopId)!}${(cart[key].shopName)!}" /></td>
+								<td><img src="${(cart[key].shopImg)!}"
+									style="width: 75px; height: 100px;" /></td>
+								<td style="padding-top: 50px;">${(cart[key].shopName)!}</td>
+								<td style="padding-top: 50px;">${(cart[key].price)!}</td>
+								<td style="padding-top: 50px;"><input type="text" name="num"
+									value="1"
+									onchange="everyTotal(${(cart[key].price)!},this.value,${(cart[key].shopId)!})" style="width: 50px;"/></td>
+								<td style="padding-top: 50px;"><span
+									id="total${(cart[key].shopId)!}" class="sTotal">${(cart[key].price)!}</span></td>
+								<td style="padding-top: 50px;"><a href="/cart/deleteShop?keys=${(key)!}" class="btn btn-danger" >删除</a></td>
+							</tr>
+						</#list>
+						
+					</tbody>
+				</table>
+			
+				<#if cart?keys?size == 0>
+						<div class="col-md-12 column" style="text-align: center;">
+							<span style="font-size: 16px;">购物车为空,</span><a href="/index" style="color: red;">去首页看看</a>
+						</div>
+						
+					</#if>
+				</#if>
+			<#else>
+				<div class="col-md-12 column" style="text-align: center;">
+					<span style="font-size: 16px;">购物车为空,</span><a href="/index" style="color: red;">去首页看看</a>
+				</div>
+			</#if>
+			
+	</div>
+	<div class="col-md-12 column" style="height: 100px">
+		<div class="col-md-2 column" style="height: 100px"></div>
+		<div class="col-md-8 column" style="height: 100px">
+
+			<div class="col-md-7 column" style="height: 100px;margin-top: 20px;"">
+				<a class="btn btn-info" style="float: left;" onclick="delShop()">删除选中商品</a>
+			</div>
+			<div class="col-md-5 column" style="height: 100px;margin-top: 20px;">
+				已选中<span id="shopnum" style="margin: 0px 5px 0px 5px; color: red;">0</span>件商品&nbsp;&nbsp;&nbsp;
+				总价：<span id="totalprice" style="font-size: 20px;color: red;"></span>&nbsp;&nbsp;
+				<#if userinfo??>
+					<a class="btn btn-danger" onclick="submitForm()" style="margin-left: 31px;">结算</a>
+					<#else>
+					<a class="btn btn-danger" href="/login" style="margin-left: 31px;">结算</a>
+				</#if>
+			</div>
+		</div>
+
+	</div>
+	</form>
+	<script type="text/javascript">
+	// 计算小计
+	function everyTotal(price,num,id){
+		 var tol ="#total" + id;
+		 $(tol).html(price * num);
+		 calcTotal();
+	}
+	
+	// 计算总价
+	function calcTotal(){
+		var a = 0;
+		var sum = 0;
+		$("input[type='checkbox'][class='check']:checked").each(function(){
+			a =a+1;
+			sum += parseFloat($(this).parent().parent().find("span[class='sTotal']")[0].innerHTML);
+		});
+		$("#shopnum").html(a);
+		$("#totalprice").html(sum);
+	}
+	// 加载时计算总价 
+	calcTotal();
+	// 多选框发生改变时计算总价
+	function check(){
+		everyTotal();
+	}
+	// 全选、全不选
+	$(".checkedAll").click(function(){
+		if(this.checked == true){
+			$("[type=checkbox]").prop('checked',true);
+		}else{
+			$("[type=checkbox]").prop('checked',false);
+		}
+		calcTotal();
+	});
+	// 删除选中商品
+	function delShop(){
+		var form = document.getElementById("cartform");
+		form.action="/cart/deleteShop";
+		form.submit();
+	}
+	
+	
+	// 提交表单
+	function submitForm(){
+		var form = document.getElementById("cartform");
+		// 防止提交多余的数据
+		$("input[type=checkbox][class=check]:not(:checked)").each(function(){
+			$(this).attr("disabled",true);
+			$(this).parent().parent().find("input[type='text']").attr("disabled",true);
+		});
+		form.submit();
+	}
+	</script>
+</body>
+</html>

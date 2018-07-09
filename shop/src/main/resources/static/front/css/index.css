@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+.mainShopImg{
+	margin-left:45px;
+	margin-top:10px;
+	width: 150px;
+	height: 150px;
+	border:2px solid #D8DBDB;
+}
+
+.shop_li{
+	width:240px;
+	height:240px;
+	float: left;
+	margin:5px 5px 5px 5px;
+	border:2px solid #D8DBDB;
+	list-style-type:none;
+	text-align:center;
+}

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lpw.hero.shopinfo.mapper.ShopinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.lpw.hero.shopinfo.bean.Shopinfo" >
+    <id column="shop_id" property="shopId" jdbcType="INTEGER" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="shop_img" property="shopImg" jdbcType="VARCHAR" />
+    <result column="shop_detail" property="shopDetail" jdbcType="VARCHAR" />
+    <result column="shop_state" property="shopState" jdbcType="VARCHAR" />
+    <result column="shop_intro" property="shopIntro" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- sql 编号 1  -->
+  <insert id="addShopInfo" parameterType="com.lpw.hero.shopinfo.bean.Shopinfo" >
+  	insert into shopinfo(shop_name,price,shop_img,shop_detail,shop_state,shop_intro)
+  	values(#{shopName},#{price},#{shopImg},#{shopDetail},#{shopState},#{shopIntro})
+  </insert>
+  
+  <!-- sql 编号2 -->
+	<select id="getShopInfoList" parameterType="com.lpw.hero.shopinfo.bean.Shopinfo"
+		resultMap="BaseResultMap">
+		select * from shopinfo
+		<where>
+			<if test="shopName != null and shopName != ''">
+				<bind name="shopNameParam" value="'%' + _parameter.shopName + '%'"></bind>
+				and shop_name like #{shopNameParam}
+			</if>
+			<if test="shopState != null and shopState != ''">
+				and shop_state = #{shopState}
+			</if>
+		</where>
+		<if test="start != -1 and length != -1">
+			limit #{start},#{length}
+		</if>
+	</select>
+	
+	<!-- sql 编号3 -->
+	<select id="getShopInfoCount" parameterType="com.lpw.hero.shopinfo.bean.Shopinfo"
+		resultType="long">
+		select count(*) from shopinfo
+		<where>
+			<if test="shopName != null and shopName != ''">
+				<bind name="shopNameParam" value="'%' + _parameter.shopName + '%'"></bind>
+				and shop_name like #{shopNameParam}
+			</if>
+			<if test="shopState != null and shopState != ''">
+				and shop_state = #{shopState}
+			</if>
+		</where>
+	</select>
+  
+  	<!-- sql 编号4 -->
+  	<update id="updateShopInfo" parameterType="com.lpw.hero.shopinfo.bean.Shopinfo">
+  		update shopinfo
+  		<set>
+  			<if test="shopName != null and shopName != ''">
+  				shop_name = #{shopName},
+  			</if>
+  			<if test="price != null and price != ''">
+  				price = #{price},
+  			</if>
+  			<if test="shopImg != null and shopImg != ''">
+  				shop_img = #{shopImg},
+  			</if>
+  			<if test="shopDetail != null and shopDetail != ''">
+  				shop_detail = #{shopDetail},
+  			</if>
+  			<if test="shopState != null and shopState != ''">
+  				shop_state = #{shopState},
+  			</if>
+  			<if test="shopIntro != null and shopIntro != ''">
+  				shop_intro = #{shopIntro},
+  			</if>
+  		</set>
+  		where shop_id = #{shopId}
+  	</update>
+  	
+  	<!-- sql 编号 5 -->
+  	<select id="getShopinfoByKey" parameterType="com.lpw.hero.shopinfo.bean.Shopinfo" resultMap="BaseResultMap">
+  		select * from shopinfo
+  		where shop_id = #{shopId}
+  	</select>
+  	
+</mapper>

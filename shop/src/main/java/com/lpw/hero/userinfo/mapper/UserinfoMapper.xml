@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lpw.hero.userinfo.mapper.UserinfoMapper">
+	<resultMap id="BaseResultMap" type="com.lpw.hero.userinfo.bean.Userinfo">
+		<id column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="mobilephone" property="mobilephone" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="usertype" property="usertype" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<!-- sql 编号1 -->
+	<select id="getUserInfoList" parameterType="com.lpw.hero.userinfo.bean.Userinfo"
+		resultMap="BaseResultMap">
+		select * from userinfo
+		<where>
+			<if test="username != null and username != ''">
+				<bind name="userparam" value="'%' + _parameter.username + '%'"></bind>
+				and username like #{userparam}
+			</if>
+			<if test="mobilephone != null and mobilephone != ''">
+				<bind name="phoneparam" value="'%' + _parameter.mobilephone + '%'"></bind>
+				and mobilephone like #{phoneparam}
+			</if>
+		</where>
+		<if test="start != -1 and length != -1">
+			limit #{start},#{length}
+		</if>
+	</select>
+	
+	<!-- sql 编号2 -->
+	<select id="getUserInfoCount" parameterType="com.lpw.hero.userinfo.bean.Userinfo"
+		resultType="long">
+		select count(*) from userinfo
+		<where>
+			<if test="username != null and username != ''">
+				<bind name="userparam" value="'%' + _parameter.username + '%'"></bind>
+				and username like #{userparam}
+			</if>
+			<if test="mobilephone != null and mobilephone != ''">
+				<bind name="phoneparam" value="'%' + _parameter.mobilephone + '%'"></bind>
+				and mobilephone like #{phoneparam}
+			</if>
+		</where>
+	</select>
+	
+	<!-- sql 编号3 -->
+	<insert id="adduserInfo" parameterType="com.lpw.hero.userinfo.bean.Userinfo">
+		insert into userinfo(username,sex,mobilephone,password,usertype,name)
+		values(#{username},#{sex},#{mobilephone},#{password},#{usertype},#{name})
+	</insert>
+	
+	<!-- sql 编号4 -->
+	<select id="getUserInfo" parameterType="com.lpw.hero.userinfo.bean.Userinfo"
+		resultMap="BaseResultMap">
+		select * from userinfo
+		<where>
+			<if test="userId != null and userId != '' ">
+				and user_id =#{userId}
+			</if>
+			<if test="username != null and username != '' ">
+				and username =#{username}
+			</if>
+		</where>
+	</select>
+	
+	<!-- sql 编号5 -->
+	<update id="updateUserInfo">
+		update userinfo
+		<set>
+			<if test="username != null and username != ''">
+				username = #{username},
+			</if>
+			<if test="sex != null and sex != ''">
+				sex = #{sex},
+			</if>
+			<if test="mobilephone != null and mobilephone != ''">
+				mobilephone = #{mobilephone},
+			</if>
+			<if test="password != null and password != ''">
+				password = #{password},
+			</if>
+			<if test="usertype != null and usertype != ''">
+				usertype = #{usertype},
+			</if>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<!-- sql 编号6 -->
+	<delete id="deleteUserInfo" parameterType="com.lpw.hero.userinfo.bean.Userinfo">  
+		delete from userinfo where user_id = #{userId}
+	</delete>
+	
+	
+</mapper>

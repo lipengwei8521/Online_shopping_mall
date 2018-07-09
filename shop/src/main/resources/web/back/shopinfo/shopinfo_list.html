@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户列表页</title>
+<link rel="stylesheet"
+	href="/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript"
+	src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+<body style="background-color: #F5F5F5">
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<div class="row alert alert-info" style="margin: 4px; padding: 5px">
+					<ul class="breadcrumb">
+						<li class="active">商品管理</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<form action="/back/shopinfo/loadShopinfoList?page=1" method="post" class="form-inline">
+					<div class="row alert alert-info" style="margin: 1px; padding: 0px">
+						<input type="hidden" name="page" value="1" /> 
+						<input type="text" name="shopName" placeholder="请输入查询的商品名称" style="width: 170px"/>
+						商品状态：
+						<select name="shopState">
+							<option value="">------</option>
+							<option value="1">初始化</option>
+							<option value="2">上架</option>
+							<option value="3">下架</option>
+						</select>
+						<input type="submit" class="btn btn-danger" value="查询" /> 
+						<a href="/back/shopinfo/loadShopInfoAdd" class="btn btn-warning">新增商品</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<div class="row alert alert-info" style="margin: 4px; padding: 5px">
+					<table class="table table-hover table-striped">
+						<thead>
+							<tr class="info">
+								<th>商品编号</th>
+								<th>商品</th>
+								<th>商品简介</th>
+								<th>商品价格</th>
+								<th>商品详情</th>
+								<th>商品状态</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<#list (pageBean.list)! as s>
+							<tr class="info">
+								<td>${(s.shopId)!}</td>
+								<td><img alt="商品图片" src="${(s.shopImg)!}" style="height: 75px;width: 100px;">${(s.shopName)!}</td>
+								<td>${(s.shopIntro)!}</td>
+								<td>${(s.price)!}元</td>
+								<td>${(s.shopDetail)!}</td>
+								<td>
+									<#if s.shopState??>
+										<#if s.shopState == '1'>
+											初始化
+										</#if>
+										<#if s.shopState == '2'>
+											上架
+										</#if>
+										<#if s.shopState == '3'>
+											下架
+										</#if>
+									</#if>
+								</td>
+								<td>
+								<a href="/back/shopinfo/loadShopInfoUpdate?shopId=${(s.shopId)!}" class="btn btn-info">修改</a>
+								<#if s.shopState == '1' || s.shopState == '2'>
+									<a href="/back/shopinfo/soldoutShopInfo?shopId=${(s.shopId)!}" class="btn btn-danger">下架</a>
+								</#if>
+								<#if s.shopState == '3'>
+									<a href="/back/shopinfo/putawayShopInfo?shopId=${(s.shopId)!}" class="btn btn-danger">上架</a>
+								</#if>
+								</td>
+							</tr>
+							</#list>
+						</tbody>
+					</table>
+					<ul class="pagination">
+						<#if pageBean.currentPage==1> <#else>
+						<li><a
+							href="/back/shopinfo/loadShopinfoList?page=1&shopName=${(shopinfo.shopName)!}&shopState=${(shopinfo.shopState)!}">第一页</a></li>
+						<li><a
+							href="/back/shopinfo/loadShopinfoList?page=${pageBean.currentPage -1}&shopName=${(shopinfo.shopName)!}&shopState=${(shopinfo.shopState)!}">上一页</a></li></#if>
+						<li><a href="#">第${(pageBean.currentPage)!}页</a></li>
+						<li><a href="#">共${(pageBean.totalPage)!}页</a></li>
+						<li><a href="#">共${(pageBean.allRow)!}条数据</a></li>
+						<#if pageBean.currentPage== pageBean.totalPage> <#else>
+						<li><a
+							href="/back/shopinfo/loadShopinfoList?page=${pageBean.currentPage +1}&shopName=${(shopinfo.shopName)!}&shopState=${(shopinfo.shopState)!}">下一页</a></li>
+						<li><a
+							href="/back/shopinfo/loadShopinfoList?page=${pageBean.totalPage}&shopName=${(shopinfo.shopName)!}&shopState=${(shopinfo.shopState)!}">最末页</a></li></#if>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

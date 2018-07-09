@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>商城首页</title>
+<link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/front/css/index.css" />
+<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<#include "/front/navigator.html">
+	<div class="container">
+		<div class="row clearfix">
+			<div class="col-md-12 column">
+				<ul class="col-md-12 column">
+					<#if shopinfos??>
+						<#list shopinfos as s>
+						 	<li class="shop_li" >
+							 	<div class="mainShopImg">
+							 		<a href="/shopinfo/${(s.shopId)!}"><img src="${(s.shopImg)!}" alt="${(s.shopName)!}" style="width: 150px;height: 150px;"/></a>
+							 	</div>
+							 	<div style="margin-top: 10px;">
+								 	<a href="/shopinfo/${(s.shopId)!}">${(s.shopName)!}&nbsp;&nbsp;&nbsp;</a>￥<span>${(s.price)!}</span><br/>
+									<span>${(s.shopIntro)!}</span>
+							 	</div>
+							</li>
+						</#list>
+					</#if>
+				  </ul>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

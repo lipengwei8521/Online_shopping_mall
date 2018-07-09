@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+	<h1>hello freemarker</h1><br/>
+		${str}
+	<#if userinfo??>
+		${userinfo.name}
+	</#if>
+	<button class="btn">点击 </button>
+	<script type="text/javascript">
+		$('.btn').click(function(){
+			alert(1);
+		});
+	</script>
+	<h2>对象</h2>
+		id：${(student.id)!'默认值id'}<br/>
+		name: ${(student.name)!'默认值name'}<br/>
+	<h2>集合</h2>
+		<#if students??>
+			<#list students as stu >
+				id:${stu.id}
+				name:${stu.name}
+			</#list>
+			<#else>
+			集合为空
+		</#if>
+	
+	<h2>map集合</h2>
+		<#if map??>
+			map.a:${map['a']}<br/>
+			map.b:${map['b']}<br/>
+			<#else>
+			map为空
+		</#if>
+	
+	<h2>遍历map</h2>
+		<#list map?keys as key>
+			key:${key},value:${map[key]}<br/>
+			<#else>
+			map为空
+		</#list>
+</body>
+</html>

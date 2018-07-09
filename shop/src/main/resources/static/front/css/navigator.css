@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+.nali{
+	width: 60px;
+	height: 20px;
+	border: 0px;
+	list-style: none;
+	float: left;
+}

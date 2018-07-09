@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>商品详情页</title>
+<link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css" />
+<script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<#include "/front/navigator.html">
+	<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="row clearfix">
+				<div class="col-md-5 column">
+					<div style="width: 450px;height:350px;border: 2px solid #D8DBDB;margin-top: 50px;" >
+						<img src="${(shopinfo.shopImg)!}" alt="${(shopinfo.shopName)!}" />
+					</div>
+					
+				</div>
+				<div class="col-md-7 column">
+					<div style="margin-top: 50px;"> 
+						<h3>${(shopinfo.shopName)!}</h3>
+				
+						<h2>${(shopinfo.price)!}</h2>
+						
+						<dl>
+							<dt>
+								商品简介:
+							</dt>
+							<dd>
+								${(shopinfo.shopIntro)!}
+							</dd>
+							<dt>
+								商品详情:
+							</dt>
+							<dd>
+								${(shopinfo.shopDetail)!}
+							</dd>
+						</dl>
+					</div>
+					
+					<div style="margin-top: 130px;">
+					<a href="#" class="btn btn-danger">立即购买</a>
+					<a href="/addToCat/${(shopinfo.shopId)!}" class="btn btn-primary"  style="margin-left:50px;: ">加入购物车</a>	
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
